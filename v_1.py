@@ -40,7 +40,6 @@ class Interface:
             Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
             Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
 
-
     def levels(self):
         
 
@@ -63,18 +62,17 @@ class Interface:
             # level title
             Label(self.level,text="Welcome to Level 2", font="Arial 30 bold").grid(row=0, column=2)
             # problem
-            self.question_win()
-            global problem
-            problem = Entry(self.level,font="Arial 30 bold")
-            problem.place(x=400,y=180,width=90,height=40)
+            self.question()
+
+            self.problem = Entry(self.level,font="Arial 30 bold")
+            self.problem.place(x=400,y=180,width=90,height=40)
             #free space 
             self.free_space_1()
             #submet button 
-
-            Button(self.level ,text="Submit",bg="cornflower blue",fg="black",command = self.checkb,font="Arial 14 bold",width=9,height=2).place(x=400, y=280)
+            self.butt = Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.checkb(self.problem))
+            self.butt.place(x=400, y=280)
             #exit bitton
             Button(self.level ,text="Exit",bg="cornflower blue",fg="black",command =self.End_wind,font="Arial 14 bold",width=9,height=2).place(x=50, y=280)
-
     def free_space_1(self):
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=0)
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=1)
@@ -83,26 +81,26 @@ class Interface:
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=2,row=4)
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
     
-    def checkb(self):
-
-        var1 = problem
-        answer = self.one + self.two
-    
-        if var1 != answer:
+    def checkb(self,prob):
+        if prob.get() == str(self.answer()):
             correct = Label(self.level, text="Correct!", fg="green")
             correct.place(x=350, y=280)
-            self.question_win()
+            self.question()
 
         else:
             wrong = Label(self.level, text="Wrong!", fg="red")
             wrong.place(x=350, y=280)
 
-    def question_win(self):
-        self.one = random.randrange(1,20)
-        self.two = random.randrange(1,20)
+    def answer(self):
+        return self.one + self.two
         
+    def question(self):
+        self.two = random.randrange(1,20)
+        self.one = random.randrange(1,20)
+        #free space
+        Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 160)
         question = Label(self.level, text=f"{self.one} + {self.two} =",font="Arial 40 bold")
-        question.place(x= 200 , y = 160)
+        question.place(x= 150 , y = 160)
 
 
     def End_wind(self):
