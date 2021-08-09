@@ -41,8 +41,7 @@ class Interface:
             Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
 
     def levels(self):
-        
-
+        self.count = 1
         self.p_n = self.player_n.get().capitalize()
         self.p_a = self.player_a.get()
         if len(self.p_n) == 0 or len(self.p_a) == 0:
@@ -60,47 +59,72 @@ class Interface:
                 widget.destroy()
 
             # level title
-            Label(self.level,text="Welcome to Level 2", font="Arial 30 bold").grid(row=0, column=2)
+            Label(self.level,text="Welcome to Level 2", font="Arial 30 bold").grid(row=0, column=3)
             # problem
             self.question()
-
-            self.problem = Entry(self.level,font="Arial 30 bold")
-            self.problem.place(x=400,y=180,width=90,height=40)
             #free space 
             self.free_space_1()
             #submet button 
             self.butt = Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.checkb(self.problem))
-            self.butt.place(x=400, y=280)
+            self.butt.place(x=510, y=300)
+
             #exit bitton
-            Button(self.level ,text="Exit",bg="cornflower blue",fg="black",command =self.End_wind,font="Arial 14 bold",width=9,height=2).place(x=50, y=280)
+            Button(self.level ,text="Exit",bg="cornflower blue",fg="black",command =self.End_wind,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
+    #free space 
     def free_space_1(self):
-            Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=0)
+            Label(self.level,text="------",font="Arial 50 bold",fg="gray95").grid(column=1,row=4)
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=1)
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=2)
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=3)
-            Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=2,row=4)
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
-    
+            Label(self.level,text="--------",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
+
     def checkb(self,prob):
+        self.count += 1
+        if self.count ==10:
+            self.butt.config(state=DISABLED)
+            self.butt.unbind("<Button-1>")
+            self.time = 10
+            self.count=0
+            def countdown():
+                if self.time >= 0:
+                    self.butt.destroy()
+                    
+                    Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.End_wind ).place(x=510, y=300) 
+                    
+                    self.time -= 1
+                else:
+                    global count
+                    self.butt.config(state=NORMAL)
+            countdown()
+        ben = self.problem.get()
         if prob.get() == str(self.answer()):
             correct = Label(self.level, text="Correct!", fg="green")
-            correct.place(x=350, y=280)
+            correct.place(x=350, y=250)
             self.question()
-
+        elif len(ben) == 0:
+            self.notvalid = True
+            messagebox.showerror("ERROR", "All boxes must be filled *")
         else:
             wrong = Label(self.level, text="Wrong!", fg="red")
             wrong.place(x=350, y=280)
+            self.question()
 
     def answer(self):
         return self.one + self.two
         
-    def question(self):
+    def question(self):     
         self.two = random.randrange(1,20)
         self.one = random.randrange(1,20)
-        #free space
-        Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 160)
+        #question        
+        Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
         question = Label(self.level, text=f"{self.one} + {self.two} =",font="Arial 40 bold")
-        question.place(x= 150 , y = 160)
+        question.place(x= 165 , y = 145)
+        #problem
+        self.problem = Entry(self.level,font="Arial 30 bold")
+        self.problem.place(x=400,y=160,width=90,height=40)
+        #count
+        Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1)
 
 
     def End_wind(self):
