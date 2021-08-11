@@ -2,6 +2,8 @@ from tkinter import *
 import random
 from PIL import ImageTk, Image
 from tkinter import messagebox
+from operator import add, sub, mul
+
 
 root = Tk()
 
@@ -10,35 +12,35 @@ class Interface:
         self.wind = wind
         self.notvalid = False
     def inter_face(self):
-        self.manu = Frame(self.wind)
-        self.manu .grid()
+        self.menu = Frame(self.wind)
+        self.menu .grid()
         #player Name 
-        Label(self.manu, font=("Arial 17 bold"), text="Player Name: ").place(x=95,y=160)
-        self.player_n=Entry(self.manu,font="Arial 14 bold")
+        Label(self.menu, font=("Arial 17 bold"), text="Player Name: ").place(x=95,y=160)
+        self.player_n=Entry(self.menu,font="Arial 14 bold")
         self.player_n.place(x=250,y=165,width=100,height=25)
         # age
-        Label(self.manu, font=("Arial 17 bold"), text="Player age: ").place(x=100,y=210)
-        self.player_a=Entry(self.manu,font="Arial 14 bold")
+        Label(self.menu, font=("Arial 17 bold"), text="Player age: ").place(x=100,y=210)
+        self.player_a=Entry(self.menu,font="Arial 14 bold")
         self.player_a.place(x=250,y=215,width=100,height=25)
         #free space
         self.free_space()
         #title
-        Label(self.manu ,text="Welcome to maths games ", font="Arial 30 bold").grid(row=0, column=2)
+        Label(self.menu ,text="Welcome to maths games ", font="Arial 30 bold").grid(row=0, column=2)
         #Level 1
-        Button(self.manu ,text="Level 1",bg="cornflower blue",fg="black",activeforeground = "green",command=self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=130)
+        Button(self.menu ,text="Level 1",bg="cornflower blue",fg="black",activeforeground = "green",command=self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=130)
         #Level 2
-        Button(self.manu ,text="Level 2",bg="#ffab40",fg="black",command =self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=198)
+        Button(self.menu ,text="Level 2",bg="#ffab40",fg="black",command =self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=198)
         #Level 3
-        Button(self.manu ,text="Level 3",bg="red",fg="black",command =self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=268)
+        Button(self.menu ,text="Level 3",bg="red",fg="black",command =self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=268)
     #free_space
     def free_space(self):
-            Label(self.manu,text="----",font="Arial 40 bold",fg="gray95").grid(column=1,row=0)
-            Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=1)
-            Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=2)
-            Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=3)
-            Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=2,row=4)
-            Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
-            Label(self.manu,text="----",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
+            Label(self.menu,text="----",font="Arial 40 bold",fg="gray95").grid(column=1,row=0)
+            Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=1)
+            Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=2)
+            Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=3)
+            Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=2,row=4)
+            Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
+            Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
 
     def levels(self):
         self.count = 1
@@ -51,7 +53,7 @@ class Interface:
             self.notvalid = True
             messagebox.showerror("ERROR", "you must be 6-12 to play *")
         else:
-            self.manu.grid_forget()
+            self.menu.grid_forget()
             self.level = Frame(self.wind)
             self.level.grid()
             self.notvalid = False
@@ -69,7 +71,7 @@ class Interface:
             self.butt.place(x=510, y=300)
 
             #exit bitton
-            Button(self.level ,text="Exit",bg="cornflower blue",fg="black",command =self.End_wind,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
+            Button(self.level ,text="New Game",bg="cornflower blue",fg="black",command =self.edit,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
     #free space 
     def free_space_1(self):
             Label(self.level,text="------",font="Arial 50 bold",fg="gray95").grid(column=1,row=4)
@@ -89,9 +91,7 @@ class Interface:
             def countdown():
                 if self.time >= 0:
                     self.butt.destroy()
-                    
-                    Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.End_wind ).place(x=510, y=300) 
-                    
+                    Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.End_wind ).place(x=510, y=300)                     
                     self.time -= 1
                 else:
                     global count
@@ -114,18 +114,24 @@ class Interface:
         return self.one + self.two
         
     def question(self):     
-        self.two = random.randrange(1,20)
-        self.one = random.randrange(1,20)
+        self.ops = (self.add, self.sub, self.mul)
+        self.op = random.choice(self.ops)
+        self.x = random.randint(1,10)
+        self.y = random.randint(1,10)
+        if self.op == self.add:
         #question        
-        Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
-        question = Label(self.level, text=f"{self.one} + {self.two} =",font="Arial 40 bold")
-        question.place(x= 165 , y = 145)
-        #problem
-        self.problem = Entry(self.level,font="Arial 30 bold")
-        self.problem.place(x=400,y=160,width=90,height=40)
-        #count
-        Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1)
-
+            Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
+            question = Label(self.level, text=f"{self.one} + {self.two} =",font="Arial 40 bold")
+            question.place(x= 165 , y = 145)
+            #problem
+            self.problem = Entry(self.level,font="Arial 30 bold")
+            self.problem.place(x=400,y=160,width=90,height=40)
+            #count
+            Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1)
+        
+    def edit(self):
+        self.level.destroy()
+        self.menu.grid() 
 
     def End_wind(self):
         self.level.grid_forget()
