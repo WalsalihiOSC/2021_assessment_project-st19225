@@ -44,18 +44,18 @@ class Interface:
             Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
             Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
     def level_1(self):
-        self.x = random.randint(1,40)
-        self.y = random.randint(41,80)
+        self.z = (1,2,3,4,5)
+        self.w = (6,7,8,9,10)
         self.lev = 1
         self.levels()
     def level_2(self):
-        self.x = random.randint(10,50)
-        self.y = random.randint(51,100)
+        self.z = (11,12,13,14,15)
+        self.w = (16,17,18,19,20)
         self.lev = 2
         self.levels()
     def level_3(self):
-        self.x = random.randint(20,60)
-        self.y = random.randint(61,120)
+        self.z = (21,22,23,24,25)
+        self.w = (26,27,28,29,30)
         self.lev = 3
         self.levels()
 
@@ -99,7 +99,6 @@ class Interface:
             Label(self.level,text="--------",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
     # Submit
     def checkb(self,prob):
-        self.count += 1
         if self.count ==10:
             self.butt.config(state=DISABLED)
             self.butt.unbind("<Button-1>")
@@ -108,7 +107,7 @@ class Interface:
             def countdown():
                 if self.time >= 0:
                     self.butt.destroy()
-                    Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.End_wind ).place(x=510, y=300)
+                    self.End_wind()
                     self.time -= 1
                 else:
                     global count
@@ -117,8 +116,10 @@ class Interface:
         ben = self.problem.get()
         if prob.get() == str(self.answer()):
             correct = Label(self.level, text="Correct!", fg="green")
-            correct.place(x=350, y=250)
+            correct.place(x=400, y=250)
             self.scoer_count += 1 
+            self.count += 1
+
             self.question()
         elif len(ben) == 0:
             self.notvalid = True
@@ -126,12 +127,15 @@ class Interface:
         else:
             wrong = Label(self.level, text="Wrong!", fg="red")
             wrong.place(x=350, y=280)
+            self.count += 1
             self.question()
     # answer
     def answer(self):
         return self.answer_1
     # question 
     def question(self):     
+        self.x = random.choice(self.z)
+        self.y = random.choice(self.w)
         ops = (add, sub, mul)
         op = random.choice(ops)
         if op == add:
@@ -147,14 +151,14 @@ class Interface:
 
         elif op == sub:
             Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
-            question = Label(self.level, text=f"{self.x} - {self.y} =",font="Arial 40 bold")
+            question = Label(self.level, text=f"{self.y} - {self.x} =",font="Arial 40 bold")
             question.place(x= 165 , y = 145)
             #problem
             self.problem = Entry(self.level,font="Arial 30 bold")
             self.problem.place(x=400,y=160,width=90,height=40)
             #count
             Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1)
-            self.answer_1 = self.x - self.y
+            self.answer_1 = self.y - self.x
 
         elif op == mul:
             Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
@@ -172,7 +176,7 @@ class Interface:
         self.menu.grid() 
     # End wind frame 
     def End_wind(self):
-        self.level.grid_forget()
+        self.level.destroy()
         self.score = Frame(self.wind)
         self.score.grid()
         Label(self.score, text="You Score").grid(column=1 , row= 1)
