@@ -8,9 +8,11 @@ from operator import add, sub, mul
 root = Tk()
 
 class Interface:
+   
     def __init__(self, wind):
         self.wind = wind
         self.notvalid = False
+    # menu frame
     def inter_face(self):
         self.menu = Frame(self.wind)
         self.menu .grid()
@@ -27,11 +29,11 @@ class Interface:
         #title
         Label(self.menu ,text="Welcome to maths games ", font="Arial 30 bold").grid(row=0, column=2)
         #Level 1
-        Button(self.menu ,text="Level 1",bg="cornflower blue",fg="black",activeforeground = "green",command=self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=130)
+        Button(self.menu ,text="Level 1",bg="cornflower blue",fg="black",activeforeground = "green",command=self.level_1,font="Arial 14 bold",width=9,height=2).place(x=400 , y=130)
         #Level 2
-        Button(self.menu ,text="Level 2",bg="#ffab40",fg="black",command =self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=198)
+        Button(self.menu ,text="Level 2",bg="#ffab40",fg="black",command =self.level_2,font="Arial 14 bold",width=9,height=2).place(x=400 , y=198)
         #Level 3
-        Button(self.menu ,text="Level 3",bg="red",fg="black",command =self.levels,font="Arial 14 bold",width=9,height=2).place(x=400 , y=268)
+        Button(self.menu ,text="Level 3",bg="red",fg="black",command =self.level_3,font="Arial 14 bold",width=9,height=2).place(x=400 , y=268)
     #free_space
     def free_space(self):
             Label(self.menu,text="----",font="Arial 40 bold",fg="gray95").grid(column=1,row=0)
@@ -41,8 +43,25 @@ class Interface:
             Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=2,row=4)
             Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
             Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
+    def level_1(self):
+        self.x = random.randint(1,40)
+        self.y = random.randint(41,80)
+        self.lev = 1
+        self.levels()
+    def level_2(self):
+        self.x = random.randint(10,50)
+        self.y = random.randint(51,100)
+        self.lev = 2
+        self.levels()
+    def level_3(self):
+        self.x = random.randint(20,60)
+        self.y = random.randint(61,120)
+        self.lev = 3
+        self.levels()
 
+    #level one frame 
     def levels(self):
+        self.scoer_count = 0
         self.count = 1
         self.p_n = self.player_n.get().capitalize()
         self.p_a = self.player_a.get()
@@ -59,9 +78,8 @@ class Interface:
             self.notvalid = False
             for widget in self.level.winfo_children():
                 widget.destroy()
-
             # level title
-            Label(self.level,text="Welcome to Level 2", font="Arial 30 bold").grid(row=0, column=3)
+            Label(self.level,text=f"Welcome to Level {self.lev}", font="Arial 30 bold").grid(row=0, column=3)
             # problem
             self.question()
             #free space 
@@ -69,7 +87,6 @@ class Interface:
             #submet button 
             self.butt = Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.checkb(self.problem))
             self.butt.place(x=510, y=300)
-
             #exit bitton
             Button(self.level ,text="New Game",bg="cornflower blue",fg="black",command =self.edit,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
     #free space 
@@ -80,7 +97,7 @@ class Interface:
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=3)
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
             Label(self.level,text="--------",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
-
+    # Submit
     def checkb(self,prob):
         self.count += 1
         if self.count ==10:
@@ -91,7 +108,7 @@ class Interface:
             def countdown():
                 if self.time >= 0:
                     self.butt.destroy()
-                    Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.End_wind ).place(x=510, y=300)                     
+                    Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.End_wind ).place(x=510, y=300)
                     self.time -= 1
                 else:
                     global count
@@ -101,6 +118,7 @@ class Interface:
         if prob.get() == str(self.answer()):
             correct = Label(self.level, text="Correct!", fg="green")
             correct.place(x=350, y=250)
+            self.scoer_count += 1 
             self.question()
         elif len(ben) == 0:
             self.notvalid = True
@@ -109,38 +127,56 @@ class Interface:
             wrong = Label(self.level, text="Wrong!", fg="red")
             wrong.place(x=350, y=280)
             self.question()
-
+    # answer
     def answer(self):
-        return self.one + self.two
-        
+        return self.answer_1
+    # question 
     def question(self):     
-        self.ops = (self.add, self.sub, self.mul)
-        self.op = random.choice(self.ops)
-        self.x = random.randint(1,10)
-        self.y = random.randint(1,10)
-        if self.op == self.add:
-        #question        
+        ops = (add, sub, mul)
+        op = random.choice(ops)
+        if op == add:
             Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
-            question = Label(self.level, text=f"{self.one} + {self.two} =",font="Arial 40 bold")
+            question = Label(self.level, text=f"{self.x} + {self.y} =",font="Arial 40 bold")
             question.place(x= 165 , y = 145)
             #problem
             self.problem = Entry(self.level,font="Arial 30 bold")
             self.problem.place(x=400,y=160,width=90,height=40)
             #count
             Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1)
-        
+            self.answer_1 = self.x + self.y
+
+        elif op == sub:
+            Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
+            question = Label(self.level, text=f"{self.x} - {self.y} =",font="Arial 40 bold")
+            question.place(x= 165 , y = 145)
+            #problem
+            self.problem = Entry(self.level,font="Arial 30 bold")
+            self.problem.place(x=400,y=160,width=90,height=40)
+            #count
+            Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1)
+            self.answer_1 = self.x - self.y
+
+        elif op == mul:
+            Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
+            question = Label(self.level, text=f"{self.y} x {self.x} =",font="Arial 40 bold")
+            question.place(x= 165 , y = 145)
+            #problem
+            self.problem = Entry(self.level,font="Arial 30 bold")
+            self.problem.place(x=400,y=160,width=90,height=40)
+            #count
+            Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1)
+            self.answer_1 = self.y * self.x
+    # next button 
     def edit(self):
         self.level.destroy()
         self.menu.grid() 
-
+    # End wind frame 
     def End_wind(self):
         self.level.grid_forget()
         self.score = Frame(self.wind)
         self.score.grid()
         Label(self.score, text="You Score").grid(column=1 , row= 1)
-        
-
-
+        Label(self.score, text=str(self.scoer_count)).grid(column=2 , row= 2)
 
 root.title("OSC Course Selection")
 root.geometry("650x380")
