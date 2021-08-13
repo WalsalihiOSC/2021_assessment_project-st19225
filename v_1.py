@@ -43,22 +43,24 @@ class Interface:
             Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=2,row=4)
             Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
             Label(self.menu,text="----",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
+    #level 1
     def level_1(self):
         self.z = (1,2,3,4,5)
         self.w = (6,7,8,9,10)
         self.lev = 1
         self.levels()
+    #level 2
     def level_2(self):
         self.z = (11,12,13,14,15)
         self.w = (16,17,18,19,20)
         self.lev = 2
         self.levels()
+    #level 3
     def level_3(self):
         self.z = (21,22,23,24,25)
         self.w = (26,27,28,29,30)
         self.lev = 3
         self.levels()
-
     #level one frame 
     def levels(self):
         self.scoer_count = 0
@@ -85,10 +87,10 @@ class Interface:
             #free space 
             self.free_space_1()
             #submet button 
-            self.butt = Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.checkb(self.problem))
+            self.butt = Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.submet(self.problem))
             self.butt.place(x=510, y=300)
             #exit bitton
-            Button(self.level ,text="New Game",bg="cornflower blue",fg="black",command =self.edit,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
+            Button(self.level ,text="New Game",bg="cornflower blue",fg="black",command =self.NEW_game,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
     #free space 
     def free_space_1(self):
             Label(self.level,text="------",font="Arial 50 bold",fg="gray95").grid(column=1,row=4)
@@ -98,29 +100,16 @@ class Interface:
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
             Label(self.level,text="--------",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
     # Submit
-    def checkb(self,prob):
-        if self.count ==10:
-            self.butt.config(state=DISABLED)
-            self.butt.unbind("<Button-1>")
-            self.time = 10
-            self.count=0
-            def countdown():
-                if self.time >= 0:
-                    self.butt.destroy()
-                    self.End_wind()
-                    self.time -= 1
-                else:
-                    global count
-                    self.butt.config(state=NORMAL)
-            countdown()
+    def submet(self,prob):
         ben = self.problem.get()
+        # input == answer
         if prob.get() == str(self.answer()):
             correct = Label(self.level, text="Correct!", fg="green")
             correct.place(x=400, y=250)
             self.scoer_count += 1 
             self.count += 1
-
             self.question()
+        # input == 0 
         elif len(ben) == 0:
             self.notvalid = True
             messagebox.showerror("ERROR", "All boxes must be filled *")
@@ -129,6 +118,23 @@ class Interface:
             wrong.place(x=350, y=280)
             self.count += 1
             self.question()
+        # button == 10 times 
+        if self.count ==11:
+            self.butt.config(state=DISABLED)
+            self.butt.unbind("<Button-1>")
+            self.time = 11
+            self.count=0
+            def countdown():
+                if self.time >= 0:
+                    Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
+                    Label(self.level, text=f"End of Game ",font="Arial 40 bold") .place(x= 165 , y = 145)
+                    Label (self.level, text ="=======",font="Arial 20 bold",fg="gray95").grid(row=0 , column=1)
+                    Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.End_wind ).place(x=510, y=300)
+                    self.time -= 1
+                else:
+                    global count
+                    self.butt.config(state=NORMAL)
+            countdown()
     # answer
     def answer(self):
         return self.answer_1
@@ -170,8 +176,8 @@ class Interface:
             #count
             Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1)
             self.answer_1 = self.y * self.x
-    # next button 
-    def edit(self):
+    # New_button 
+    def NEW_game(self):
         self.level.destroy()
         self.menu.grid() 
     # End wind frame 
@@ -179,8 +185,30 @@ class Interface:
         self.level.destroy()
         self.score = Frame(self.wind)
         self.score.grid()
-        Label(self.score, text="You Score").grid(column=1 , row= 1)
-        Label(self.score, text=str(self.scoer_count)).grid(column=2 , row= 2)
+        self.free_space_2()
+        Label(self.score, text="You Score",font="Arial 30 bold").grid(column=3 , row= 0)
+        Label(self.score, text=str(self.scoer_count),font="Arial 30 bold").grid(column=3 , row= 1)
+        Button(self.score ,text="New Game",bg="cornflower blue",fg="black",command =self.NEW_game ,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
+        Button(self.score ,text="New Player",bg="cornflower blue",fg="black",command =self.bat ,font="Arial 14 bold",width=9,height=2).place(x=20, y=200)
+        Button(self.score ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.quit ).place(x=510, y=300)
+
+
+    def free_space_2(self):
+                Label(self.score,text="---------",font="Arial 50 bold",fg="gray95").grid(column=1,row=4)
+                Label(self.score,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=1)
+                Label(self.score,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=2)
+                Label(self.score,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=3)
+                Label(self.score,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
+                Label(self.score,text="----------",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
+    def bat(self):
+        self.score.destroy()
+        self.level.destroy()
+        self.menu.grid() 
+    def quit(self):
+        self.wind.destroy()
+    def bat(self):
+        self.score.destroy()
+        self.inter_face()
 
 root.title("OSC Course Selection")
 root.geometry("650x380")
