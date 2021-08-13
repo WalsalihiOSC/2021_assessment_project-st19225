@@ -1,6 +1,5 @@
 from tkinter import *
 import random
-from PIL import ImageTk, Image
 from tkinter import messagebox
 from operator import add, sub, mul
 
@@ -104,20 +103,21 @@ class Interface:
         ben = self.problem.get()
         # input == answer
         if prob.get() == str(self.answer()):
-            correct = Label(self.level, text="Correct!", fg="green")
-            correct.place(x=400, y=250)
+            correct = Label(self.level, text="✔️", fg="green",font="Arial 60 bold")
+            correct.place(x=500, y=160)
             self.scoer_count += 1 
             self.count += 1
-            self.question()
+            Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.next ).place(x=510, y=300)
         # input == 0 
         elif len(ben) == 0:
             self.notvalid = True
             messagebox.showerror("ERROR", "All boxes must be filled *")
         else:
-            wrong = Label(self.level, text="Wrong!", fg="red")
-            wrong.place(x=350, y=280)
+            wrong = Label(self.level, text="❌", fg="red")
+            wrong.place(x=500, y=160)
             self.count += 1
-            self.question()
+            Button(self.level ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.next ).place(x=510, y=300)
+
         # button == 10 times 
         if self.count ==11:
             self.butt.config(state=DISABLED)
@@ -138,6 +138,12 @@ class Interface:
     # answer
     def answer(self):
         return self.answer_1
+    def next(self):
+        self.question()
+        self.butt = Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.submet(self.problem))
+        self.butt.place(x=510, y=300)
+
+
     # question 
     def question(self):     
         self.x = random.choice(self.z)
@@ -145,7 +151,7 @@ class Interface:
         ops = (add, sub, mul)
         op = random.choice(ops)
         if op == add:
-            Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
+            Label (self.level, text="==========",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
             question = Label(self.level, text=f"{self.x} + {self.y} =",font="Arial 40 bold")
             question.place(x= 165 , y = 145)
             #problem
@@ -156,7 +162,7 @@ class Interface:
             self.answer_1 = self.x + self.y
 
         elif op == sub:
-            Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
+            Label (self.level, text="==========",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
             question = Label(self.level, text=f"{self.y} - {self.x} =",font="Arial 40 bold")
             question.place(x= 165 , y = 145)
             #problem
@@ -167,7 +173,7 @@ class Interface:
             self.answer_1 = self.y - self.x
 
         elif op == mul:
-            Label (self.level, text="======",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
+            Label (self.level, text="==========",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
             question = Label(self.level, text=f"{self.y} x {self.x} =",font="Arial 40 bold")
             question.place(x= 165 , y = 145)
             #problem
@@ -187,8 +193,8 @@ class Interface:
         self.score.grid()
         self.free_space_2()
         Label(self.score, text="You Score",font="Arial 30 bold").grid(column=3 , row= 0)
-        Label(self.score, text=str(self.scoer_count),font="Arial 30 bold").grid(column=3 , row= 1)
-        Button(self.score ,text="New Game",bg="cornflower blue",fg="black",command =self.NEW_game ,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
+        Label(self.score, text=self.scoer_count,font="Arial 30 bold").grid(column=3 , row= 1)
+        Button(self.score ,text="New Game",bg="cornflower blue",fg="black",command =self.bat_1 ,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
         Button(self.score ,text="New Player",bg="cornflower blue",fg="black",command =self.bat ,font="Arial 14 bold",width=9,height=2).place(x=20, y=200)
         Button(self.score ,text="Exit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.quit ).place(x=510, y=300)
 
@@ -200,9 +206,8 @@ class Interface:
                 Label(self.score,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=3)
                 Label(self.score,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
                 Label(self.score,text="----------",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
-    def bat(self):
+    def bat_1(self):
         self.score.destroy()
-        self.level.destroy()
         self.menu.grid() 
     def quit(self):
         self.wind.destroy()
