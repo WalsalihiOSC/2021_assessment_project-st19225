@@ -20,3 +20,4 @@ class Player:
         player_file.write(f"your Score({ps}/10)\n")
         player_file.write("****************************\n\n")
         player_file.close()
+45
