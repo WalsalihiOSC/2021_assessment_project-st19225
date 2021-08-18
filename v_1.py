@@ -226,4 +226,3 @@ class Inter_face:
     def bat(self):
         self.score.destroy()
         self.inter_face()
-
