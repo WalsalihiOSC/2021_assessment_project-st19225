@@ -48,7 +48,7 @@ class Inter_face:
         self.player_a = self.pa.get()
         self.lev = self.lv
 
-        self.player = Student(self.player_n, self.player_a,self.lev)
+        self.player = Student(self.player_n, self.player_a)
         # random nubers from lest
         w , z = self.player.level_one()
 
@@ -64,7 +64,7 @@ class Inter_face:
         self.player_n = self.pn.get().capitalize()
         self.player_a = self.pa.get()
         self.lev = self.lv
-        self.player = Student(self.player_n, self.player_a,self.lev)
+        self.player = Student(self.player_n, self.player_a)
         # random nubers from lest
         w , z = self.player.level_two()
         self.x = (z)
@@ -77,7 +77,7 @@ class Inter_face:
         self.player_n = self.pn.get().capitalize()
         self.player_a = self.pa.get()
         self.lev = self.lv
-        self.player = Student(self.player_n, self.player_a,self.lev)
+        self.player = Student(self.player_n, self.player_a)
         # random nubers from lest
         w , z = self.player.level_three()
         self.x = (z)

@@ -1,10 +1,9 @@
 
 
 class Student:
-    def __init__(self,pn,pa,lv):
+    def __init__(self,pn,pa):
         self.player_name = pn
         self.player_age = pa
-        self.level = lv
 
 
     def age (self):
@@ -31,7 +30,6 @@ class Student:
         player_file.write("****************************\n")
         player_file.write("player Name: {} \nplayerer age: {} \n \n"
         .format(self.player_name, self.player_age))
-        player_file.write(f"level {self.level}\n")
         player_file.write(f"your Score({ps}/10)\n")
         player_file.write("****************************\n\n")
         player_file.close()
