@@ -11,16 +11,22 @@ class Inter_face:
         self.notvalid = False
     # menu frame
     def inter_face(self):
+
         self.menu = Frame(self.wind)
         self.menu .grid()
         #player Name 
         Label(self.menu, font=("Arial 17 bold"), text="Player Name: ").place(x=95,y=160)
         self.pn=Entry(self.menu,font="Arial 14 bold")
         self.pn.place(x=250,y=165,width=100,height=25)
-        # age
+        # age 
+
+        vcmd = (self.menu.register(self.validate),
+                '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
         Label(self.menu, font=("Arial 17 bold"), text="Player age: ").place(x=100,y=210)
-        self.pa=Entry(self.menu,font="Arial 14 bold")
+        self.pa=Entry(self.menu,font="Arial 14 bold", validate = 'key',validatecommand = vcmd)
         self.pa.place(x=250,y=215,width=100,height=25)
+        self.pa.focus()
+
         #free space
         self.free_space()
         #title
@@ -31,6 +37,9 @@ class Inter_face:
         Button(self.menu ,text="Level 2",bg="#ffab40",fg="black",command =self.level_2,font="Arial 14 bold",width=9,height=2).place(x=400 , y=198)
         #Level 3
         Button(self.menu ,text="Level 3",bg="red",fg="black",command =self.level_3,font="Arial 14 bold",width=9,height=2).place(x=400 , y=268)
+       
+        # random nubers from lest
+        
     #free_space
     def free_space(self):
             Label(self.menu,text="----",font="Arial 40 bold",fg="gray95").grid(column=1,row=0)
@@ -43,29 +52,22 @@ class Inter_face:
     #level 1
     def level_1(self):
         self.lv = "1"
-       
         self.player_n = self.pn.get().capitalize()
         self.player_a = self.pa.get()
-        self.lev = self.lv
-
+        
         self.player = Student(self.player_n, self.player_a)
-        # random nubers from lest
         w , z = self.player.level_one()
-
         self.x = (z)
         self.y = (w)
-    
         self.levels()
-#level 2
+    #level 2
     def level_2(self):
         self.lv = "2"
-        
-
+        # random nubers from lest
         self.player_n = self.pn.get().capitalize()
         self.player_a = self.pa.get()
-        self.lev = self.lv
+
         self.player = Student(self.player_n, self.player_a)
-        # random nubers from lest
         w , z = self.player.level_two()
         self.x = (z)
         self.y = (w)
@@ -73,31 +75,31 @@ class Inter_face:
     #level 3
     def level_3(self):
         self.lv = "3"
-        
+        # random nubers from lest
         self.player_n = self.pn.get().capitalize()
         self.player_a = self.pa.get()
-        self.lev = self.lv
+
         self.player = Student(self.player_n, self.player_a)
-        # random nubers from lest
         w , z = self.player.level_three()
         self.x = (z)
         self.y = (w) 
         self.levels()
-
     #level one frame 
     def levels(self):
         self.scoer_count = 0
         self.count = 1
 
-        
-        self.main = self.player.age()
+        self.lev = self.lv
+
+        age_error = self.player.age_verification() 
 
         if len(self.player_n) == 0 or len(self.player_a) == 0:
             self.notvalid = True
-            messagebox.showerror("ERROR", "All boxes must be filled *")
-        elif self.player_a not in self.main:
+            messagebox.showerror( "ERROR","All boxes must be filled *")
+        
+        elif age_error == False:
             self.notvalid = True
-            messagebox.showerror("ERROR", "you must be 6-12 years old to play *")
+            messagebox.showerror("ERROR", "you must be 5-12 years old to play *")
         else:
             self.menu.grid_forget()
             self.level = Frame(self.wind)
@@ -112,8 +114,7 @@ class Inter_face:
             #free space 
             self.free_space_1()
             #submet button 
-            self.butt = Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.submet(self.problem))
-            self.butt.place(x=510, y=300)
+            Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.submet(self.problem)).place(x=510, y=300)
     #free space 
     def free_space_1(self):
             Label(self.level,text="------",font="Arial 50 bold",fg="gray95").grid(column=1,row=4)
@@ -122,7 +123,7 @@ class Inter_face:
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=1,row=3)
             Label(self.level,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
             Label(self.level,text="--------",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
-    # Submit
+    # Submit butt
     def submet(self,prob):
 
         ben = self.problem.get()
@@ -146,7 +147,10 @@ class Inter_face:
 
         # button == 10 times 
         if self.count == 11:
-            # End of Q
+            Button(self.level ,text="Next",bg="green",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.lest_q ).place(x=510, y=300)
+    #end of Q
+    def lest_q(self):
+         # End of Q
             Label (self.level, text="=============",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
             Label(self.level, text=f"End of Game ",font="Arial 40 bold") .place(x= 165 , y = 145)
             Label (self.level, text ="=========",font="Arial 20 bold",fg="gray95").grid(row=0 , column=1)
@@ -160,21 +164,37 @@ class Inter_face:
     def next(self):
         Label (self.level, text ="===========",font="Arial 20 bold",fg="gray95").place(x=310, y=220)
         self.reandom_q()
-        self.butt = Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.submet(self.problem))
-        self.butt.place(x=510, y=300)
+        Button(self.level ,text="Submit",bg="cornflower blue",fg="black" ,font="Arial 14 bold",width=9,height=2,command = lambda: self.submet(self.problem)).place(x=510, y=300)       
     #qustion / count
     def qustion (self):
             Label (self.level, text="==========",font="Arial 50 bold",fg="gray95").place(x= 150 , y = 140)
             question = Label(self.level, text=f"{self.one} {self.add} {self.two} =",font="Arial 40 bold")
             question.place(x= 165 , y = 145)
             #problem
-            self.problem = Entry(self.level,font="Arial 30 bold")
+            
+            vcmd = (self.level.register(self.validate),
+                            '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+            self.problem = Entry(self.level,font="Arial 30 bold" , validate = 'key',validatecommand = vcmd)
             self.problem.place(x=400,y=160,width=90,height=40)
+            self.problem.focus()
+
             #count
             Label (self.level, text=f"Q:({self.count}/10)",font="Arial 20 bold").grid(row=0 , column=1) 
+    # pervent_abcd 
+    def validate(self, action, index, value_if_allowed,
+                       prior_value, text, validation_type, trigger_type, widget_name):
+        if text in '0123456789.-+':
+            try:
+                if value_if_allowed:
+                    float(value_if_allowed)
+                return True
+            except ValueError:
+                return False
+        else:
+            return False
     # random question 
     def reandom_q(self):     
-        # random Q from les                                                      t 
+        # random Q from lest                                                     
         self.one = random.choice(self.y)
         self.two =  random.choice(self.x)
 
@@ -209,11 +229,11 @@ class Inter_face:
         Label(self.score, text=" Scoreboard ",font="Arial 30 bold").grid(column=3 , row= 0)
         Label(self.score, text=f"you Scored({self.scoer_count}/10)",font="Arial 30 ").grid(column=3 , row= 2)
         #new game button
-        Button(self.score ,text="New Game",bg="cornflower blue",fg="black",command =self.bat_1 ,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
+        Button(self.score ,text="New Game",bg="cornflower blue",fg="black",command =self.new_g ,font="Arial 14 bold",width=9,height=2).place(x=20, y=300)
         #new player button
-        Button(self.score ,text="New Player",bg="green",fg="black",command =self.bat ,font="Arial 14 bold",width=9,height=2).place(x=20, y=200)
+        Button(self.score ,text="New Player",bg="green",fg="black",command =self.new_p ,font="Arial 14 bold",width=9,height=2).place(x=20, y=200)
         #exit button
-        Button(self.score ,text="End Game",bg="red",fg="black" ,font="Arial 14 bold",width=9,height=2,command = self.quit ).place(x=510, y=300)
+        Button(self.score ,text="End Game",bg="red",fg="black" ,font="Arial 14 bold",width=9,height=2,command =self.wind.destroy).place(x=510, y=300)
     #free space
     def free_space_2(self):
                 Label(self.score,text="---------",font="Arial 50 bold",fg="gray95").grid(column=1,row=4)
@@ -223,16 +243,16 @@ class Inter_face:
                 Label(self.score,text="----",font="Arial 50 bold",fg="gray95").grid(column=3,row=4)
                 Label(self.score,text="----------",font="Arial 50 bold",fg="gray95").grid(column=4,row=4)
     #new game
-    def bat_1(self):
+    def new_g(self):
         self.score.destroy()
         self.menu.grid() 
-    #exit
-    def quit(self):
-        self.wind.destroy()
+         
     #new player
-    def bat(self):
+    def new_p(self):
         self.score.destroy()
         self.inter_face()
+
+
 root = Tk()
 
 root.title("OSC Course Selection")
@@ -242,3 +262,4 @@ gui = Inter_face(root)
 
 gui.inter_face()
 root.mainloop()
+import tkinter as tk

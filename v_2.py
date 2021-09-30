@@ -6,9 +6,12 @@ class Student:
         self.player_age = pa
 
 
-    def age (self):
-        return ["6","7","8","9","10","11","12"]
-        
+    def age_verification(self):
+            if self.player_age in ['5','6','7','8','9','10','11','12']:
+                    return True 
+            else:
+                    return False 
+
     def level_one(self):
             z = ["1","2","3","4","5"]
             w = ["6","7","8","9","10"]
